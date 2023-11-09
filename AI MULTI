@@ -1,0 +1,45 @@
+# AI-TRANSALTOR
+import os
+from googletrans import Translator, LANGUAGES
+
+# Set your Google Cloud API key as an environment variable
+os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = 'your-credentials-file.json'
+
+# Initialize the translator
+translator = Translator()
+
+# Function to detect the language
+def detect_language(text):
+    result = translator.detect(text)
+    return result.lang
+
+# Function to perform translation
+def translate_text(text, target_language):
+    translated = translator.translate(text, dest=target_language)
+    return translated.text
+
+# Supported languages
+print("Supported languages:")
+for code, language in LANGUAGES.items():
+    print(f"{code}: {language}")
+
+while True:
+    source_text = input("Enter text to translate: ")
+    source_language = detect_language(source_text)
+    
+    print(f"Detected source language: {LANGUAGES[source_language]}")
+    
+    target_language = input("Enter target language code: ")
+    
+    if target_language not in LANGUAGES:
+        print("Invalid target language code. Please choose a valid code.")
+        continue
+    
+    translated_text = translate_text(source_text, target_language)
+    
+    print(f"Translated text: {translated_text}")
+    
+    continue_translation = input("Translate another text? (y/n): ")
+    
+    if continue_translation.lower() != 'y':
+        break
